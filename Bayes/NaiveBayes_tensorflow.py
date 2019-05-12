@@ -115,4 +115,5 @@ if __name__ == '__main__':
 
         # 打印测试集的分类结果
         classifyResult = sess.run(y, feed_dict={x_train: trainMat, y_train: trainClass, x_test: testMat, y_test: testClass})
+        print('Test set classify result: ')
         print(np.squeeze(np.array(classifyResult, dtype=int)))
