@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pydotplus
 from sklearn import datasets
-from sklearn.tree import DecisionTreeClassifier
+from sklearn import tree
 
 
 # 加载数据集并且进行shuffle操作
@@ -14,13 +15,20 @@ def createDataSet():
 
 
 def createTree(dataSet, label):
-    DT = DecisionTreeClassifier(criterion='gini', max_depth=4)
+    DT = tree.DecisionTreeClassifier(criterion='gini', max_depth=4)
     DT.fit(dataSet, label)
     return DT
 
 
-def figShow(dataSet, label):
+def figShowAndWrite(dataSet, label):
     DT = createTree(dataSet, label)
+
+    # 写入graph文件
+    dot_data = tree.export_graphviz(DT, out_file=None)
+    graph = pydotplus.graph_from_dot_data(dot_data)
+    graph.write_pdf('graph/iris.pdf')
+
+    # 画图
     x_min, x_max = dataSet[:, 0].min()-1, dataSet[:, 0].max()+1
     y_min, y_max = dataSet[:, 1].min()-1, dataSet[:, 1].max()+1
 
@@ -36,4 +44,4 @@ def figShow(dataSet, label):
 
 if __name__ == '__main__':
     dataSet, label = createDataSet()
-    figShow(dataSet, label)
+    figShowAndWrite(dataSet, label)
