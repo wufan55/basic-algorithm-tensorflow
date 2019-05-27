@@ -4,6 +4,5 @@
 ### 1、Kmeans-tensorflow (Done)
 ### 2、Knn-tensorflow (Done)
 ### 3、NaiveBayes-tensorflow (Done)
-### 4、DecisionTree-tensorflow (Doing)
-### 5、Apriori-tensorflow (Done)
-### 6、DBSCAN-tensorflow (Doing)
+### 4、DecisionTree-tensorflow (Done)
+### 5、Apriori-tensorflow (Doing)
