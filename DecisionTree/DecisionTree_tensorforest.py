@@ -5,8 +5,14 @@ from tensorflow.contrib.tensor_forest.python import tensor_forest
 from tensorflow.contrib.tensor_forest.client import random_forest
 
 
-# 加载数据集并且进行shuffle操作
 def createDataSet():
+    """
+    加载iris数据集
+
+    :return x: type=np.array, 数据集
+    :return y: type=np.array, 标签
+    """
+
     iris = datasets.load_iris()
     index = np.random.choice(150, 150, replace=False)
     x = np.array(iris.data[:, [0, 2]])[index]
@@ -15,12 +21,31 @@ def createDataSet():
 
 
 def figShowAndWrite(dataSet, label):
+    """
+    对数据集进行决策树分类并用图表显示
+
+    :param dataSet: 数据集
+    :param label: 标签
+
+    :return:
+    """
+
+    # 获取特征个数和类个数
     featureNum = dataSet.shape[1]
     classNum = len(set(label))
 
+    # 调用高层api实现决策树
+
+    # 根据参数生成type=ForestHParams的决策树参数
     params = tensor_forest.ForestHParams(num_classes=classNum, num_features=featureNum, num_trees=1, max_nodes=20)
+
+    # 使用type=ForestHParams的参数生成决策树
     classifier = random_forest.TensorForestEstimator(params)
+
+    # 决策树拟合训练集
     classifier.fit(dataSet, label)
+
+    # 显示决策树的分类结果
 
     # 画图
     x_min, x_max = dataSet[:, 0].min()-1, dataSet[:, 0].max()+1
@@ -28,7 +53,10 @@ def figShowAndWrite(dataSet, label):
 
     xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1), np.arange(y_min, y_max, 0.1))
 
-    Z = np.array(list(classifier.predict(np.c_[xx.ravel(), yy.ravel()].astype(np.float32))))
+    # 使用生成的决策树进行分类
+    Z = classifier.predict(np.c_[xx.ravel(), yy.ravel()].astype(np.float32))
+
+    Z = np.array(list(Z))
     for i in range(len(Z)):
         Z[i] = Z[i]['classes']
     Z = Z.reshape(xx.shape)
