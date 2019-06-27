@@ -72,7 +72,7 @@ def classify(inX, dataSet, labels, k):
     classNum = tf.size(tf.unique(ids)[0])
     num = tf.unsorted_segment_sum(tf.ones(k), ids, classNum)
 
-    # 取数据点数量量最多的类作为结果
+    # 取数据量最多的类作为分类结果
     result = tf.argmax(num)
     return result
 
